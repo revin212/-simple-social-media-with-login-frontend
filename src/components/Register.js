@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function Register() {
   return (
-    <div className='max-w-[1100px] mx-auto flex justify-center items-center h-full'>
+    <div className='max-w-[1100px] mx-auto flex justify-center items-center h-full pt-[6rem]'>
         <div className="register-form w-[100%] max-w-[500px] justify-center items-center">
             <h1 className='font-bold text-2xl mb-[0.5rem]'>
                 Register
@@ -22,7 +22,7 @@ export default function Register() {
                 <input type="password" className='mb-[1.5rem] bg-gray-600 outline-none py-2 px-4 rounded-md' />
                 <label htmlFor="">Confirm Password</label>
                 <input type="password" className='mb-[1.5rem] bg-gray-600 outline-none py-2 px-4 rounded-md' />
-                <input type="submit" value={"Submit"} className=" bg-gray-500 hover:bg-gray-400 py-2 px-4 cursor-pointer rounded-md mt-[1rem]"/>
+                <input type="submit" value={"Register"} className=" bg-gray-500 hover:bg-gray-400 py-2 px-4 cursor-pointer rounded-md mt-[1rem] mb-[3rem]"/>
             </form>
         </div>
     </div>

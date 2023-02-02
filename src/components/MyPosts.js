@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function MyPosts() {
   return (
-    <div className='max-w-[1100px] mx-auto'>
+    <div className='max-w-[1100px] mx-auto pt-[6rem]'>
         <div className="profile mb-[2rem] mt-[2rem]">
             <h1 className='font-bold text-2xl'>
                 Revin Dennis Ramadhan

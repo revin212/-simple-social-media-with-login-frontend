@@ -2,13 +2,13 @@ import React from 'react'
 
 export default function MyPosts() {
   return (
-    <div className='max-w-[1100px] mx-auto'>
+    <div className='max-w-[1100px] mx-auto pt-[3rem]'>
         <div className="create-post my-[3rem]">
             <form action="" className='flex flex-col'>
-                <label htmlFor="create-post" className='text-xl mb-4'>Create Post</label>
+                <label htmlFor="create-post" className='text-xl mb-4'>Create a Post</label>
                 <textarea name="create-post" id="create-post" rows="5" style={{resize:'none'}}
-                placeholder='Write a post...' className=' rounded-md bg-gray-700 outline-none border-[1px] p-4 w-full max-w-[700px]'></textarea>
-                <div className="submit w-full max-w-[700px] flex justify-end mt-2">
+                placeholder='Write a post...' className=' rounded-md bg-gray-700 outline-none border-[1px] p-4 w-full'></textarea>
+                <div className="submit w-full flex justify-end mt-2">
                     <input type="submit" value={'Post'} className='w-full max-w-[100px] rounded-md bg-gray-500 hover:bg-gray-400 cursor-pointer py-1' />
                 </div>
             </form>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Navbar() {
     const [loggedIn, setLoggedIn] = useState(false); 
   return (
-    <div className='py-4 max-w-[1100px] mx-auto'>
+    <div className='py-4 max-w-[1100px] mx-auto fixed top-0 left-0 right-0 bg-gray-800'>
         <nav className='flex justify-between font-bold'>
             <Link to={'/'}>
                 All Posts
