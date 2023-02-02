@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BrowserRouter as Router }  from 'react-router-dom';
 
 export default function Navbar() {
     const [loggedIn, setLoggedIn] = useState(false); 
   return (
     <div className='py-4 max-w-[1100px] mx-auto'>
-        <Router>
         <nav className='flex justify-between font-bold'>
             <Link to={'/'}>
-                All Post
+                All Posts
             </Link>
             {
                 loggedIn?
@@ -32,7 +30,6 @@ export default function Navbar() {
                 </div>
             }
         </nav>
-        </Router>
     </div>
   )
 }
