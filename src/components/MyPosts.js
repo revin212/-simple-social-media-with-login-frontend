@@ -1,6 +1,34 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import axios from 'axios'
+import jwt_decode from 'jwt-decode'
+import GetUserPosts from './get_posts/GetUserPosts.js';
 
-export default function MyPosts() {
+export default function MyPosts({loggedIn, setLoggedIn}) {
+    const [token, setToken] = useState('');
+    const [username, setUsername] = useState('');
+
+    const refreshToken = async () => {
+        try {
+            const instance = axios.create({withCredentials: true});
+            const response = await instance.get('http://localhost:5000/token')
+            if(response.status === 200) {
+                setLoggedIn(true)
+            }
+            // console.log(response)
+            setToken(()=>response.data.accessToken)
+            const decoded = jwt_decode(response.data.accessToken);
+            // console.log(decoded);
+            setUsername(()=>decoded.username);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        refreshToken();
+    }, [])
+
+
   return (
     <div className='max-w-[1100px] mx-auto pt-[6rem]'>
         <div className="profile mb-[2rem] mt-[2rem]">
@@ -16,7 +44,8 @@ export default function MyPosts() {
                 My Posts
             </h3>
             <div className="posts-container flex flex-col gap-[1.5rem]">
-                <div className="post my-6">
+                {token && <GetUserPosts token={token} username={username} />}
+                {/* <div className="post my-6">
                     <div className="header mb-3 flex justify-between items-start">
                         <div className="author">
                         <h3 className='font-semibold text-lg'>
@@ -47,7 +76,7 @@ export default function MyPosts() {
                         </div>
                     </div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
-                </div>
+                </div> */}
             </div>
         </div>
     </div>

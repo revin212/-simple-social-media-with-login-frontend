@@ -1,8 +1,21 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-export default function Navbar() {
-    const [loggedIn, setLoggedIn] = useState(false); 
+export default function Navbar({loggedIn, setLoggedIn}) {
+    const navigate = useNavigate
+
+    const Logout = async () => {
+        try {
+            const instance = axios.create({withCredentials: true});
+            await instance.delete('http://localhost:5000/logout')
+            setLoggedIn(false)
+            navigate('/')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
   return (
     <div className='py-4 max-w-[1100px] mx-auto fixed top-0 left-0 right-0 bg-gray-800'>
         <nav className='flex justify-between font-bold'>
@@ -15,7 +28,7 @@ export default function Navbar() {
                     <Link to={'/myposts'}>
                         <p>My Posts</p> 
                     </Link>
-                    <Link to={'/logout'}>
+                    <Link to={'/'} onClick={Logout}>
                         <p>Logout</p>
                     </Link>
                 </div>

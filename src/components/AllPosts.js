@@ -1,24 +1,63 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import axios from 'axios'
+import jwt_decode from 'jwt-decode'
+import { Link } from 'react-router-dom'
+import GetAllPosts from './get_posts/GetAllPosts';
 
-export default function MyPosts() {
+export default function AllPosts({loggedIn, setLoggedIn}) {
+    // const [posts, setPosts] = useState([])
+    // const [loading, setLoading] = useState(true)
+    // const [error, setError] = useState('')
+    // const navigate = useNavigate()
+    const [token, setToken] = useState('');
+
+    const refreshToken = async () => {
+        try {
+            const instance = axios.create({withCredentials: true});
+            const response = await instance.get('http://localhost:5000/token')
+            if(response.status === 200) {
+                setLoggedIn(true)
+            }
+            // console.log(response)
+            setToken(response.data.accessToken)
+            const decoded = jwt_decode(response.data.accessToken);
+            // console.log(decoded);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        refreshToken();
+    }, [])
+
   return (
     <div className='max-w-[1100px] mx-auto pt-[3rem]'>
         <div className="create-post my-[3rem]">
+            {loggedIn?
             <form action="" className='flex flex-col'>
-                <label htmlFor="create-post" className='text-xl mb-4'>Create a Post</label>
-                <textarea name="create-post" id="create-post" rows="5" style={{resize:'none'}}
-                placeholder='Write a post...' className=' rounded-md bg-gray-700 outline-none border-[1px] p-4 w-full'></textarea>
-                <div className="submit w-full flex justify-end mt-2">
-                    <input type="submit" value={'Post'} className='w-full max-w-[100px] rounded-md bg-gray-500 hover:bg-gray-400 cursor-pointer py-1' />
-                </div>
+            <label htmlFor="create-post" className='text-xl mb-4'>Create a Post</label>
+            <textarea name="create-post" id="create-post" rows="5" style={{resize:'none'}}
+            placeholder='Write a post...' className=' rounded-md bg-gray-700 outline-none border-[1px] p-4 w-full'></textarea>
+            <div className="submit w-full flex justify-end mt-2">
+                <input type="submit" value={'Post'} className='w-full max-w-[100px] rounded-md bg-gray-500 hover:bg-gray-400 cursor-pointer py-1' />
+            </div>
             </form>
+            :
+            <div className="login-to-post">
+                <p>Please <Link to={'/login'} className='text-blue-400 hover:underline'>Login</Link> to create a post</p>
+            </div>
+            }
+            
         </div>
         <div className="All-posts pb-[3rem]">
             <h1 className='font-bold text-2xl'>
                 All Posts
             </h1>
+
             <div className="posts-container flex flex-col gap-[1.5rem]">
-                <div className="post my-6">
+                <GetAllPosts />
+                {/* <div className="post my-6">
                     <div className="header mb-3">
                         <div className="author">
                         <h3 className='font-semibold text-lg'>
@@ -41,7 +80,7 @@ export default function MyPosts() {
                         </h2>
                     </div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
-                </div>
+                </div> */}
             </div>
         </div>
     </div>

@@ -1,7 +1,48 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
-export default function Login() {
+export default function Login({loggedIn, setLoggedIn}) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [msg, setMsg] = useState('');
+  const navigate = useNavigate();
+
+  const refreshToken = async () => {
+    try {
+        const instance = axios.create({withCredentials: true});
+        const response = await instance.get('http://localhost:5000/token')
+        if(response.status === 200) {
+            setLoggedIn(true)
+            navigate('/')
+        }
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  useEffect(() => {
+      refreshToken();
+  }, [])
+  
+
+  const Auth = async (e) => {
+    e.preventDefault();
+    try {
+    const instance = axios.create({withCredentials: true});
+    await instance.post('http://localhost:5000/login', {
+      username: username,
+      password: password
+    });
+      setLoggedIn(true);
+      navigate('/');
+    } catch (error) {
+      if(error.response){
+        setMsg(error.response.data.msg)
+      }
+    }
+  }
+
   return (
     <div className=' pt-[6rem] max-w-[1100px] mx-auto flex justify-center items-center'>
         <div className="login-form w-[100%] max-w-[500px] justify-center items-center">
@@ -13,12 +54,25 @@ export default function Login() {
                 Don't have an account? <Link to={'/register'} className='text-blue-400 hover:underline'>Register</Link>
               </p>
 
-            <form action="" className='flex flex-col'>
-                <label htmlFor="">Username</label>
-                <input type="text" className='mb-[1.5rem] bg-gray-600 outline-none py-2 px-4 rounded-md' />
-                <label htmlFor="">Password</label>
-                <input type="password" className='mb-[1.5rem] bg-gray-600 outline-none py-2 px-4 rounded-md' />
-                <input type="submit" value={"Login"} className=" bg-gray-500 hover:bg-gray-400 py-2 px-4 cursor-pointer rounded-md mt-[1rem]"/>
+            <form onSubmit={Auth} className='flex flex-col'>
+              {msg && <p className='w-full text-center py-2 border-[1px] border-red-400 mb-[1rem]'>{msg}</p>}
+              <label htmlFor="">Username</label>
+              <input 
+              type="text" 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className='mb-[1.5rem] bg-gray-600 outline-none py-2 px-4 rounded-md' />
+              <label htmlFor="">Password</label>
+              <input 
+              type="password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className='mb-[1.5rem] bg-gray-600 outline-none py-2 px-4 rounded-md' />
+              
+              <input 
+              type="submit" 
+              value={"Login"} 
+              className=" bg-gray-500 hover:bg-gray-400 py-2 px-4 cursor-pointer rounded-md mt-[1rem]"/>
             </form>
         </div>
     </div>
