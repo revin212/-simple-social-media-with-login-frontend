@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 
 export default function GetAllPosts({postIsCreated, setPostIsCreated}) {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-
+    const updatePosts = useCallback(()=>{
+        getAllPosts();
+        if(postIsCreated){
+            setPostIsCreated(false)
+        }
+    }, [postIsCreated, setPostIsCreated])
 
     const getAllPosts = async () => {
         try {
@@ -19,9 +24,8 @@ export default function GetAllPosts({postIsCreated, setPostIsCreated}) {
     }
 
     useEffect(() => {
-        getAllPosts()
-        setPostIsCreated(false)
-    }, [postIsCreated])
+        updatePosts();
+    }, [updatePosts])
 
     // if(postIsCreated){
     //     getAllPosts();
@@ -32,7 +36,7 @@ export default function GetAllPosts({postIsCreated, setPostIsCreated}) {
     <div className="post">
         {posts?.map((post, index) => {
             return(
-            <div key={post.id} className="post my-6">
+            <div key={post.id} className="post my-6 break-words">
             <div className="header mb-3">
             <div className="author">
             <h3 className='font-semibold text-lg'>

@@ -11,28 +11,27 @@ export default function AllPosts({loggedIn, setLoggedIn}) {
     const [content, setContent] = useState('');
     const [postIsCreated, setPostIsCreated] = useState(false);
 
-    const refreshToken = async () => {
-        try {
-            const instance = axios.create({withCredentials: true});
-            const response = await instance.get('http://localhost:5000/token')
-            if(response.status === 200) {
-                setLoggedIn(true)
-            }
-            // console.log(response)
-            setToken(response.data.accessToken)
-            const decoded = jwt_decode(response.data.accessToken);
-            setName(decoded.name);
-            setUsername(decoded.username);
-            // console.log(decoded);
-        } catch (error) {
-            // console.log(error);
-            return
-        }
-    }
-
     useEffect(() => {
-        refreshToken();
-    }, [loggedIn])
+        const refreshToken = async () => {
+            try {
+                const instance = axios.create({withCredentials: true});
+                const response = await instance.get('http://localhost:5000/token')
+                if(response.status === 200) {
+                    setLoggedIn(true)
+                }
+                setToken(response.data.accessToken)
+                const decoded = jwt_decode(response.data.accessToken);
+                setName(decoded.name);
+                setUsername(decoded.username);
+            } catch (error) {
+                // setLoggedIn(false)
+                return
+            }
+        };
+        if(loggedIn){
+            refreshToken();
+        }
+    }, [loggedIn, setLoggedIn])
 
 
     const createPost = async (e) => {
@@ -40,7 +39,7 @@ export default function AllPosts({loggedIn, setLoggedIn}) {
             e.preventDefault()
             e.target.reset()
             const instance = axios.create({withCredentials: true});
-            const response = await instance.post('http://localhost:5000/posts', {
+            await instance.post('http://localhost:5000/posts', {
                 author: name,
                 username: username,
                 content: content
@@ -56,7 +55,7 @@ export default function AllPosts({loggedIn, setLoggedIn}) {
     }
 
   return (
-    <div className='max-w-[1100px] mx-auto pt-[3rem]'>
+    <div className='w-full max-w-[1100px] mx-auto pt-[3rem]'>
         <div className="create-post my-[3rem]">
             {loggedIn?
             <form onSubmit={async (e)=>{await createPost(e); setPostIsCreated(true)}} className='flex flex-col'>

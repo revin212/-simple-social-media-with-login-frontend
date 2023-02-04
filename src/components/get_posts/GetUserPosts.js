@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 
 export default function GetUserPosts({token, username}) {
@@ -6,9 +6,7 @@ export default function GetUserPosts({token, username}) {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-
-    const getUserPosts = async () => {
-        // console.log('token: ', token)
+    const getUserPosts = useCallback(async () => {
         try {
             const instance = axios.create({withCredentials: true});
             const response = await instance.get(`http://localhost:5000/posts/${username}`, {
@@ -16,20 +14,16 @@ export default function GetUserPosts({token, username}) {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            // console.log('response: ',response)
             setPosts([...response.data].reverse())
-            // console.log('posts: ', posts)
             setLoading(false)
         } catch (error) {
             console.log('error: ',error)
             setError(error)
             setLoading(false)
         }
-    }
+    }, [token, username])
 
-    useEffect(() => {
-        getUserPosts()
-    }, [])
+    useEffect(()=>{ getUserPosts(); } , [getUserPosts])
 
 
     const deletePost = async (e) => {
@@ -53,7 +47,7 @@ export default function GetUserPosts({token, username}) {
     <div className="post">
         {posts?.map((post, index) => {
             return(
-            <div key={index} className="post my-6">
+            <div key={index} className="post my-6 break-words">
                 <div className="header mb-3 flex justify-between">
                     <div className="author">
                     <h3 className='font-semibold text-lg'>

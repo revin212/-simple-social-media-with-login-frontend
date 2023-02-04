@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar({loggedIn, setLoggedIn}) {
@@ -17,7 +17,7 @@ export default function Navbar({loggedIn, setLoggedIn}) {
     }
 
   return (
-    <div className='py-4 max-w-[1100px] mx-auto fixed top-0 left-0 right-0 bg-gray-800'>
+    <div className='py-4 max-w-[1116px] mx-auto fixed top-0 left-0 right-0 bg-gray-800 px-[1rem]'>
         <nav className='flex justify-between font-bold'>
             <Link to={'/'}>
                 All Posts

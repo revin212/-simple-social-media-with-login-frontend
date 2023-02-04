@@ -5,6 +5,7 @@ import AllPosts from "./components/AllPosts";
 import Navbar from "./components/Navbar";
 import Register from "./components/Register";
 import { useState } from "react";
+import NotFound from "./components/404.js";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -15,12 +16,13 @@ function App() {
         <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
 
         <Routes>
-          <Route exact path="/" element={<AllPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />            
+          <Route exact path="/" element={<AllPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
+          <Route path="*" element={<NotFound />} />            
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/login"
           element={
           
-            !loggedIn ? 
+            (!loggedIn) ? 
               <Login setLoggedIn={setLoggedIn} />
              : 
               <Navigate to={{ pathname: '/', state: { from: '/login' } }} />

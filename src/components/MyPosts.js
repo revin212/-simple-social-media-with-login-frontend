@@ -10,30 +10,25 @@ export default function MyPosts({loggedIn, setLoggedIn}) {
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
 
-
-    const refreshToken = async () => {
-        try {
-            const instance = axios.create({withCredentials: true});
-            const response = await instance.get('http://localhost:5000/token')
-            if(response.status === 200) {
-                setLoggedIn(true)
-            }
-            // console.log(response)
-            setToken(response.data.accessToken)
-            const decoded = jwt_decode(response.data.accessToken);
-            // console.log(decoded);
-            setName(decoded.name)
-            setUsername(decoded.username);
-        } catch (error) {
-            // console.log(error);
-            setLoggedIn(false);
-            navigate('/login');
-        }
-    }
-
     useEffect(() => {
+        const refreshToken = async () => {
+            try {
+                const instance = axios.create({withCredentials: true});
+                const response = await instance.get('http://localhost:5000/token')
+                if(response.status === 200) {
+                    setLoggedIn(true)
+                }
+                setToken(response.data.accessToken)
+                const decoded = jwt_decode(response.data.accessToken);
+                setName(decoded.name)
+                setUsername(decoded.username);
+            } catch (error) {
+                setLoggedIn(false);
+                navigate('/login');
+            }
+        }
         refreshToken();
-    }, [])
+    }, [navigate, setLoggedIn])
 
 
   return (
