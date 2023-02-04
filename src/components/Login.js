@@ -2,29 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-export default function Login({loggedIn, setLoggedIn}) {
+export default function Login({setLoggedIn}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
-  const refreshToken = async () => {
-    try {
-        const instance = axios.create({withCredentials: true});
-        const response = await instance.get('http://localhost:5000/token')
-        if(response.status === 200) {
-            setLoggedIn(true)
-            navigate('/')
-        }
-    } catch (error) {
-        console.log(error);
-    }
-  }
-
-  useEffect(() => {
-      refreshToken();
-  }, [])
-  
 
   const Auth = async (e) => {
     e.preventDefault();

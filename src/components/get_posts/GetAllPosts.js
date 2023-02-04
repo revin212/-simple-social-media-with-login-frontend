@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-export default function GetAllPosts() {
+export default function GetAllPosts({postIsCreated, setPostIsCreated}) {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+
 
     const getAllPosts = async () => {
         try {
@@ -19,7 +20,13 @@ export default function GetAllPosts() {
 
     useEffect(() => {
         getAllPosts()
-    }, [])
+        setPostIsCreated(false)
+    }, [postIsCreated])
+
+    // if(postIsCreated){
+    //     getAllPosts();
+    //     setPostIsCreated(false);
+    // }
 
   return (
     <div className="post">
@@ -32,7 +39,7 @@ export default function GetAllPosts() {
                 {post.author}
             </h3>
             <h2 className='font-semibold text-md'>
-                {post.username}
+                @{post.username}
             </h2>
             </div>                        
             </div>

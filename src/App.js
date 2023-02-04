@@ -1,4 +1,4 @@
-import { BrowserRouter as Router,Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router,Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import MyPosts from "./components/MyPosts";
 import AllPosts from "./components/AllPosts";
@@ -15,13 +15,26 @@ function App() {
         <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
 
         <Routes>
-          <Route exact path="/" element={<AllPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
-            
-          <Route exact path="/login" element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
-            
+          <Route exact path="/" element={<AllPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />            
           <Route exact path="/register" element={<Register />} />
-            
-          <Route exact path="/myposts" element={<MyPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
+          <Route exact path="/login"
+          element={
+          
+            !loggedIn ? 
+              <Login setLoggedIn={setLoggedIn} />
+             : 
+              <Navigate to={{ pathname: '/', state: { from: '/login' } }} />
+          }
+          />
+          <Route exact path="/myposts"
+          element={
+          
+            loggedIn ? 
+              <MyPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+             : 
+              <Navigate to={{ pathname: '/login', state: { from: '/myposts' } }} />
+          }
+          />
         </Routes>
     </div>
     </Router>

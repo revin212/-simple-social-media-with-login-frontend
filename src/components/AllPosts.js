@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom'
 import GetAllPosts from './get_posts/GetAllPosts';
 
 export default function AllPosts({loggedIn, setLoggedIn}) {
-    // const [posts, setPosts] = useState([])
-    // const [loading, setLoading] = useState(true)
-    // const [error, setError] = useState('')
-    // const navigate = useNavigate()
     const [token, setToken] = useState('');
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [content, setContent] = useState('');
+    const [postIsCreated, setPostIsCreated] = useState(false);
 
     const refreshToken = async () => {
         try {
@@ -21,24 +21,53 @@ export default function AllPosts({loggedIn, setLoggedIn}) {
             // console.log(response)
             setToken(response.data.accessToken)
             const decoded = jwt_decode(response.data.accessToken);
+            setName(decoded.name);
+            setUsername(decoded.username);
             // console.log(decoded);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
+            return
         }
     }
 
     useEffect(() => {
         refreshToken();
-    }, [])
+    }, [loggedIn])
+
+
+    const createPost = async (e) => {
+        try {
+            e.preventDefault()
+            e.target.reset()
+            const instance = axios.create({withCredentials: true});
+            const response = await instance.post('http://localhost:5000/posts', {
+                author: name,
+                username: username,
+                content: content
+            },{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+        
+    }
 
   return (
     <div className='max-w-[1100px] mx-auto pt-[3rem]'>
         <div className="create-post my-[3rem]">
             {loggedIn?
-            <form action="" className='flex flex-col'>
+            <form onSubmit={async (e)=>{await createPost(e); setPostIsCreated(true)}} className='flex flex-col'>
             <label htmlFor="create-post" className='text-xl mb-4'>Create a Post</label>
-            <textarea name="create-post" id="create-post" rows="5" style={{resize:'none'}}
-            placeholder='Write a post...' className=' rounded-md bg-gray-700 outline-none border-[1px] p-4 w-full'></textarea>
+            <textarea name="create-post" 
+            onChange={(e)=>setContent(e.target.value)}
+            id="create-post" 
+            rows="5" 
+            style={{resize:'none'}}
+            placeholder='Write a post...' 
+            className=' rounded-md bg-gray-700 outline-none border-[1px] p-4 w-full'></textarea>
             <div className="submit w-full flex justify-end mt-2">
                 <input type="submit" value={'Post'} className='w-full max-w-[100px] rounded-md bg-gray-500 hover:bg-gray-400 cursor-pointer py-1' />
             </div>
@@ -56,7 +85,7 @@ export default function AllPosts({loggedIn, setLoggedIn}) {
             </h1>
 
             <div className="posts-container flex flex-col gap-[1.5rem]">
-                <GetAllPosts />
+                <GetAllPosts postIsCreated={postIsCreated} setPostIsCreated={setPostIsCreated} />
                 {/* <div className="post my-6">
                     <div className="header mb-3">
                         <div className="author">

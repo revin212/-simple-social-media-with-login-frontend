@@ -2,10 +2,14 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import GetUserPosts from './get_posts/GetUserPosts.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyPosts({loggedIn, setLoggedIn}) {
     const [token, setToken] = useState('');
+    const [name, setName] = useState('');
     const [username, setUsername] = useState('');
+    const navigate = useNavigate();
+
 
     const refreshToken = async () => {
         try {
@@ -15,12 +19,15 @@ export default function MyPosts({loggedIn, setLoggedIn}) {
                 setLoggedIn(true)
             }
             // console.log(response)
-            setToken(()=>response.data.accessToken)
+            setToken(response.data.accessToken)
             const decoded = jwt_decode(response.data.accessToken);
             // console.log(decoded);
-            setUsername(()=>decoded.username);
+            setName(decoded.name)
+            setUsername(decoded.username);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
+            setLoggedIn(false);
+            navigate('/login');
         }
     }
 
@@ -33,10 +40,10 @@ export default function MyPosts({loggedIn, setLoggedIn}) {
     <div className='max-w-[1100px] mx-auto pt-[6rem]'>
         <div className="profile mb-[2rem] mt-[2rem]">
             <h1 className='font-bold text-2xl'>
-                Revin Dennis Ramadhan
+                {name}
             </h1>
             <h2 className='font-semibold text-lg'>
-                @revin21
+                @{username}
             </h2>
         </div>
         <div className="my-posts pb-[3rem]">
