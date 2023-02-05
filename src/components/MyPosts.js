@@ -4,8 +4,8 @@ import jwt_decode from 'jwt-decode'
 import GetUserPosts from './get_posts/GetUserPosts.js';
 import { useNavigate } from 'react-router-dom';
 
-export default function MyPosts({loggedIn, setLoggedIn}) {
-    const [token, setToken] = useState('');
+export default function MyPosts({loggedIn, setLoggedIn, token, setToken}) {
+    // const [token, setToken] = useState('');
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function MyPosts({loggedIn, setLoggedIn}) {
             }
         }
         refreshToken();
-    }, [navigate, setLoggedIn])
+    }, [navigate, setLoggedIn, setToken])
 
 
   return (
@@ -47,38 +47,6 @@ export default function MyPosts({loggedIn, setLoggedIn}) {
             </h3>
             <div className="posts-container flex flex-col gap-[1.5rem]">
                 {token && <GetUserPosts token={token} username={username} />}
-                {/* <div className="post my-6">
-                    <div className="header mb-3 flex justify-between items-start">
-                        <div className="author">
-                        <h3 className='font-semibold text-lg'>
-                            Revin Dennis Ramadhan
-                        </h3>
-                        <h2 className='font-semibold text-md'>
-                            @revin21
-                        </h2>
-                        </div>
-                        <div className="delete">
-                            D
-                        </div>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla debitis libero ut impedit iste nobis,</p>
-                </div>
-                <div className="post my-6">
-                    <div className="header mb-3 flex justify-between items-start">
-                        <div className="author">
-                        <h3 className='font-semibold text-lg'>
-                            Revin Dennis Ramadhan
-                        </h3>
-                        <h2 className='font-semibold text-md'>
-                            @revin21
-                        </h2>
-                        </div>
-                        <div className="delete">
-                            D
-                        </div>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
-                </div> */}
             </div>
         </div>
     </div>

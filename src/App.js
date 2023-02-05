@@ -9,6 +9,7 @@ import NotFound from "./components/404.js";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [token, setToken] = useState('');
 
   return (
     <Router>
@@ -16,23 +17,15 @@ function App() {
         <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
 
         <Routes>
-          <Route exact path="/" element={<AllPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
+          <Route exact path="/" element={<AllPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} token={token} setToken={setToken}  />} />
           <Route path="*" element={<NotFound />} />            
           <Route exact path="/register" element={<Register />} />
-          <Route exact path="/login"
-          element={
-          
-            (!loggedIn) ? 
-              <Login setLoggedIn={setLoggedIn} />
-             : 
-              <Navigate to={{ pathname: '/', state: { from: '/login' } }} />
-          }
-          />
+          <Route exact path="/login" element={ <Login setLoggedIn={setLoggedIn} /> } />
           <Route exact path="/myposts"
           element={
           
             loggedIn ? 
-              <MyPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+              <MyPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} token={token} setToken={setToken} />
              : 
               <Navigate to={{ pathname: '/login', state: { from: '/myposts' } }} />
           }

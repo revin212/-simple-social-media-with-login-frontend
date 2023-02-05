@@ -4,8 +4,8 @@ import jwt_decode from 'jwt-decode'
 import { Link } from 'react-router-dom'
 import GetAllPosts from './get_posts/GetAllPosts';
 
-export default function AllPosts({loggedIn, setLoggedIn}) {
-    const [token, setToken] = useState('');
+export default function AllPosts({loggedIn, setLoggedIn, token, setToken}) {
+    // const [token, setToken] = useState('');
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [content, setContent] = useState('');
@@ -28,10 +28,9 @@ export default function AllPosts({loggedIn, setLoggedIn}) {
                 return
             }
         };
-        if(loggedIn){
-            refreshToken();
-        }
-    }, [loggedIn, setLoggedIn])
+        refreshToken();
+        
+    }, [setLoggedIn, setToken])
 
 
     const createPost = async (e) => {

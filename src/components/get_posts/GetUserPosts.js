@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
+import deleteIcon from '../../images/delete-icon.svg'
 
 export default function GetUserPosts({token, username}) {
     const [posts, setPosts] = useState([])
@@ -58,7 +59,7 @@ export default function GetUserPosts({token, username}) {
                     </h2>
                     </div>
                     <div className="delete">
-                        <button id={`${post.id}`} onClick={(e)=>deletePost(e)}>Delete</button>    
+                        <button id={`${post.id}`} onClick={(e)=>deletePost(e)}><img src={deleteIcon} alt='delete' className='w-[25px]' /></button>    
                     </div>                      
                 </div>
                 <p>{post.content}</p>
