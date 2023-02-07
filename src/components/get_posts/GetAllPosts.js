@@ -15,7 +15,7 @@ export default function GetAllPosts({postIsCreated, setPostIsCreated}) {
     const getAllPosts = async () => {
         try {
         const response = await axios.get('http://localhost:5000/posts')
-        setPosts([...response.data].reverse())
+        setPosts(response.data.reverse())
         setLoading(false)
     } catch (error) {
         setError(error)
@@ -36,7 +36,7 @@ export default function GetAllPosts({postIsCreated, setPostIsCreated}) {
     <div className="post">
         {posts?.map((post, index) => {
             return(
-            <div key={post.id} className="post my-6 break-words">
+            <div key={post.id} className="post my-6 break-words pb-4 border-b border-slate-600">
             <div className="header mb-3">
             <div className="author">
             <h3 className='font-semibold text-lg'>
@@ -47,7 +47,9 @@ export default function GetAllPosts({postIsCreated, setPostIsCreated}) {
             </h2>
             </div>                        
             </div>
-            <p>{post.content}</p>
+            <p className='text-lg'>
+                {post.content}
+            </p>
             </div>
             )
         })

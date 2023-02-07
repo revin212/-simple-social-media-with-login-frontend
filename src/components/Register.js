@@ -12,9 +12,20 @@ export default function Register() {
 
   const Register = async (e) => {
     e.preventDefault();
+    if(username.indexOf('\'') > 0 || username.indexOf('"') > 0 || username.indexOf('`') > 0){
+      alert('username must not contain \', ", or `')
+      return
+    } else if(password.indexOf('\'') > 0 || password.indexOf('"') > 0 || password.indexOf('`') > 0){
+      alert('password must not contain \', ", or `')
+      return
+    }
+    let filteredName = name
+    filteredName = filteredName.replace(/'/g, "\\'")
+      .replace(/`/g, "\\`")
+      .replace(/"/g, '\\"')
     try {
       await axios.post('http://localhost:5000/users', {
-        name: name,
+        name: filteredName,
         username: username,
         password: password,
         confPassword: confPassword,

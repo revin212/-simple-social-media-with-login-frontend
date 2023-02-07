@@ -37,11 +37,15 @@ export default function AllPosts({loggedIn, setLoggedIn, token, setToken}) {
         try {
             e.preventDefault()
             e.target.reset()
+            let filteredContent = content
+            filteredContent = filteredContent.replace(/'/g, "\\'")
+            .replace(/`/g, "\\`")
+            .replace(/"/g, '\\"')
             const instance = axios.create({withCredentials: true});
             await instance.post('http://localhost:5000/posts', {
                 author: name,
                 username: username,
-                content: content
+                content: filteredContent
             },{
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -60,7 +64,9 @@ export default function AllPosts({loggedIn, setLoggedIn, token, setToken}) {
             <form onSubmit={async (e)=>{await createPost(e); setPostIsCreated(true)}} className='flex flex-col'>
             <label htmlFor="create-post" className='text-xl mb-4'>Create a Post</label>
             <textarea name="create-post" 
-            onChange={(e)=>setContent(e.target.value)}
+            onChange={
+                (e)=>{setContent(e.target.value);}
+            }
             id="create-post" 
             rows="5" 
             style={{resize:'none'}}
@@ -84,30 +90,6 @@ export default function AllPosts({loggedIn, setLoggedIn, token, setToken}) {
 
             <div className="posts-container flex flex-col gap-[1.5rem]">
                 <GetAllPosts postIsCreated={postIsCreated} setPostIsCreated={setPostIsCreated} />
-                {/* <div className="post my-6">
-                    <div className="header mb-3">
-                        <div className="author">
-                        <h3 className='font-semibold text-lg'>
-                            Revin Dennis Ramadhan
-                        </h3>
-                        <h2 className='font-semibold text-md'>
-                            @revin21
-                        </h2>
-                        </div>                        
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla debitis libero ut impedit iste nobis,</p>
-                </div>
-                <div className="post my-6">
-                    <div className="header mb-3">
-                        <h3 className='font-semibold text-lg'>
-                            Revin Dennis Ramadhan
-                        </h3>
-                        <h2 className='font-semibold text-md'>
-                            @revin21
-                        </h2>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
-                </div> */}
             </div>
         </div>
     </div>

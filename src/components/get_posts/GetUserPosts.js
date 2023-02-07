@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
-import deleteIcon from '../../images/delete-icon.svg'
+import moreIcon from '../../images/more-icon.svg'
+import DeletePost from './DeletePost'
+import EditPost from './EditPost'
 
 export default function GetUserPosts({token, username}) {
-    const [posts, setPosts] = useState([])
+    const [userPosts, setUserPosts] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
@@ -15,7 +17,7 @@ export default function GetUserPosts({token, username}) {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            setPosts([...response.data].reverse())
+            await setUserPosts(response.data.reverse())
             setLoading(false)
         } catch (error) {
             console.log('error: ',error)
@@ -24,31 +26,15 @@ export default function GetUserPosts({token, username}) {
         }
     }, [token, username])
 
-    useEffect(()=>{ getUserPosts(); } , [getUserPosts])
+    useEffect(()=>{ if(username) getUserPosts(); } , [getUserPosts, username])
 
-
-    const deletePost = async (e) => {
-        try {
-            // console.log(e.target.id)
-            const id = Number(e.target.id);
-            const instance = axios.create({withCredentials: true});
-            await instance.delete(`http://localhost:5000/posts/${username}/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            await getUserPosts()
-        } catch (error) {
-            console.log('error: ',error)
-            setError(error)
-        }
-    }
 
   return (
     <div className="post">
-        {posts?.map((post, index) => {
+        {!loading &&
+        userPosts?.map((post, index) => {
             return(
-            <div key={index} className="post my-6 break-words">
+            <div key={index} className="post my-6 break-words pb-4 border-b border-slate-600">
                 <div className="header mb-3 flex justify-between">
                     <div className="author">
                     <h3 className='font-semibold text-lg'>
@@ -58,11 +44,21 @@ export default function GetUserPosts({token, username}) {
                         @{post.username}
                     </h2>
                     </div>
-                    <div className="delete">
-                        <button id={`${post.id}`} onClick={(e)=>deletePost(e)}><img src={deleteIcon} alt='delete' className='w-[25px]' /></button>    
+                    <div className="delete relative">
+                        <button 
+                        onClick={()=>document.getElementById(`${post.id}`).classList.toggle('hidden')}>
+                            <img src={moreIcon} alt='more-option' className='w-[25px]' />
+                        </button>
+                        
+                        <div id={`${post.id}`} className="edit-delete hidden absolute top-0 right-[2rem] bg-gray-700 p-2 rounded-lg">
+                            <EditPost postId={post.id} username={post.username} postContent={post.content} token={token} setError={setError} getUserPosts={getUserPosts} />
+                            <DeletePost postId={post.id} username={post.username} token={token} setError={setError} getUserPosts={getUserPosts} />
+                        </div>
                     </div>                      
                 </div>
-                <p>{post.content}</p>
+                <p className='text-lg'>
+                    {post.content}
+                </p>
             </div>
             )
         })

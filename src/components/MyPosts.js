@@ -41,7 +41,7 @@ export default function MyPosts({loggedIn, setLoggedIn, token, setToken}) {
                 @{username}
             </h2>
         </div>
-        <div className="my-posts pb-[3rem]">
+        <div className="my-posts pb-[8rem]">
             <h3 className='font-semibold text-lg'>
                 My Posts
             </h3>
