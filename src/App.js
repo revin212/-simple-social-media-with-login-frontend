@@ -20,7 +20,7 @@ function App() {
           <Route exact path="/" element={<AllPosts loggedIn={loggedIn} setLoggedIn={setLoggedIn} token={token} setToken={setToken}  />} />
           <Route path="*" element={<NotFound />} />            
           <Route exact path="/register" element={<Register />} />
-          <Route exact path="/login" element={ <Login setLoggedIn={setLoggedIn} /> } />
+          <Route exact path="/login" element={ <Login setLoggedIn={setLoggedIn} setToken={setToken} /> } />
           <Route exact path="/myposts"
           element={
           

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-export default function Login({setLoggedIn}) {
+export default function Login({setLoggedIn, setToken}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
@@ -13,10 +13,12 @@ export default function Login({setLoggedIn}) {
     e.preventDefault();
     try {
     const instance = axios.create({withCredentials: true});
-    await instance.post('http://localhost:5000/login', {
+    const res = await instance.post('http://localhost:5000/login', {
       username: username,
       password: password
     });
+      // console.log(res)
+      setToken(res.data.accessToken)
       setLoggedIn(true);
       navigate('/');
     } catch (error) {
