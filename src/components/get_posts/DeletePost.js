@@ -7,7 +7,7 @@ export default function DeletePost({postId, username, token, setError, getUserPo
         try {
             const id = postId;
             const instance = axios.create({withCredentials: true});
-            await instance.delete(`http://localhost:5000/posts/${username}/${id}`, {
+            await instance.delete(`https://strange-flannel-shirt-ox.cyclic.app/posts/${username}/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

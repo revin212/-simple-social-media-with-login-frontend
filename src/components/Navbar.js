@@ -8,7 +8,7 @@ export default function Navbar({loggedIn, setLoggedIn}) {
     const Logout = async () => {
         try {
             const instance = axios.create({withCredentials: true});
-            await instance.delete('http://localhost:5000/logout')
+            await instance.delete('https://strange-flannel-shirt-ox.cyclic.app/logout')
             setLoggedIn(false)
             navigate('/')
         } catch (error) {

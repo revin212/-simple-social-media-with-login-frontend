@@ -14,7 +14,7 @@ export default function MyPosts({loggedIn, setLoggedIn, token, setToken}) {
         const refreshToken = async () => {
             try {
                 const instance = axios.create({withCredentials: true});
-                const response = await instance.get('http://localhost:5000/token')
+                const response = await instance.get('https://strange-flannel-shirt-ox.cyclic.app/token')
                 if(response.status === 200) {
                     setLoggedIn(true)
                 }

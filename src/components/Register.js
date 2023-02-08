@@ -7,11 +7,13 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confPassword, setConfPassword] = useState('');
+  const [registering, setRegistering] = useState(false);
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
   const Register = async (e) => {
     e.preventDefault();
+    setRegistering(true);
     if(username.indexOf('\'') > 0 || username.indexOf('"') > 0 || username.indexOf('`') > 0){
       alert('username must not contain \', ", or `')
       return
@@ -24,12 +26,13 @@ export default function Register() {
       .replace(/`/g, "\\`")
       .replace(/"/g, '\\"')
     try {
-      await axios.post('http://localhost:5000/users', {
+      await axios.post('https://strange-flannel-shirt-ox.cyclic.app/users', {
         name: filteredName,
         username: username,
         password: password,
         confPassword: confPassword,
       })
+      setRegistering(false);
       navigate('/login');
     } catch (error) {
       if(error.response){
@@ -80,7 +83,7 @@ export default function Register() {
                 className='mb-[1.5rem] bg-gray-600 outline-none py-2 px-4 rounded-md' />
 
                 <input type="submit" 
-                value={"Register"} 
+                value={registering? "Loading..." : "Register" } 
                 className=" bg-gray-500 hover:bg-gray-400 py-2 px-4 cursor-pointer rounded-md mt-[1rem] mb-[3rem]"/>
             </form>
         </div>

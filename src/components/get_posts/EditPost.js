@@ -19,7 +19,7 @@ export default function EditPost({postId, username, postContent, token, setError
             .replace(/`/g, "\\`")
             .replace(/"/g, '\\"')
             const instance = axios.create({withCredentials: true});
-            await instance.put(`http://localhost:5000/posts/`, {
+            await instance.put(`https://strange-flannel-shirt-ox.cyclic.app/posts/`, {
                 username: username,
                 id: id,
                 content: filteredContent

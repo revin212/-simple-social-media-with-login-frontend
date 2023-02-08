@@ -15,7 +15,7 @@ export default function AllPosts({loggedIn, setLoggedIn, token, setToken}) {
         const refreshToken = async () => {
             try {
                 const instance = axios.create({withCredentials: true});
-                const response = await instance.get('http://localhost:5000/token')
+                const response = await instance.get('https://strange-flannel-shirt-ox.cyclic.app/token')
                 if(response.status === 200) {
                     setLoggedIn(true)
                 }
@@ -42,7 +42,7 @@ export default function AllPosts({loggedIn, setLoggedIn, token, setToken}) {
             .replace(/`/g, "\\`")
             .replace(/"/g, '\\"')
             const instance = axios.create({withCredentials: true});
-            await instance.post('http://localhost:5000/posts', {
+            await instance.post('https://strange-flannel-shirt-ox.cyclic.app/posts', {
                 author: name,
                 username: username,
                 content: filteredContent

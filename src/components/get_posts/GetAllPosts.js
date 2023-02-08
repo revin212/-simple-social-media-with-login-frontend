@@ -14,12 +14,12 @@ export default function GetAllPosts({postIsCreated, setPostIsCreated}) {
 
     const getAllPosts = async () => {
         try {
-        const response = await axios.get('http://localhost:5000/posts')
+        const response = await axios.get('https://strange-flannel-shirt-ox.cyclic.app/posts')
         setPosts(response.data.reverse())
         setLoading(false)
     } catch (error) {
-        setError(error)
         setLoading(false)
+        setError(error)        
     }
     }
 

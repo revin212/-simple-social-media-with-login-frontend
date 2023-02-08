@@ -5,21 +5,24 @@ import axios from 'axios'
 export default function Login({setLoggedIn, setToken}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loggingIn, setLoggingIn] = useState(false);
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
 
   const Auth = async (e) => {
     e.preventDefault();
+    setLoggingIn(true)
     try {
     const instance = axios.create({withCredentials: true});
-    const res = await instance.post('http://localhost:5000/login', {
+    const res = await instance.post('https://strange-flannel-shirt-ox.cyclic.app/login', {
       username: username,
       password: password
     });
       // console.log(res)
       setToken(res.data.accessToken)
       setLoggedIn(true);
+      setLoggingIn(false);
       navigate('/');
     } catch (error) {
       if(error.response){
@@ -56,7 +59,7 @@ export default function Login({setLoggedIn, setToken}) {
               
               <input 
               type="submit" 
-              value={"Login"} 
+              value={loggingIn? "Loading..." : "Login"} 
               className=" bg-gray-500 hover:bg-gray-400 py-2 px-4 cursor-pointer rounded-md mt-[1rem]"/>
             </form>
         </div>

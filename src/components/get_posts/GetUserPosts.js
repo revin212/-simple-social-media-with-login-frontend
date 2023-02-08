@@ -12,7 +12,7 @@ export default function GetUserPosts({token, username}) {
     const getUserPosts = useCallback(async () => {
         try {
             const instance = axios.create({withCredentials: true});
-            const response = await instance.get(`http://localhost:5000/posts/${username}`, {
+            const response = await instance.get(`https://strange-flannel-shirt-ox.cyclic.app/posts/${username}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -21,8 +21,8 @@ export default function GetUserPosts({token, username}) {
             setLoading(false)
         } catch (error) {
             console.log('error: ',error)
-            setError(error)
             setLoading(false)
+            setError(error)
         }
     }, [token, username])
 
